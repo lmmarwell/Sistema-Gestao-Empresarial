@@ -1,1 +1,1 @@
-oi
+<?php echo $company_name; ?>

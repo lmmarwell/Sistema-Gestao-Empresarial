@@ -11,6 +11,19 @@ class LoginController extends controller
     public function index () {
         $data = array();
 
+        if (isset($_POST['email']) && !empty($_POST['email'])) {
+            $email  = addslashes($_POST['email']);
+            $pass   = addslashes($_POST['password']);
+
+            $u = new Users();
+
+            if ($u->doLogin($email, $pass)) {
+                header("Location: ".BASE);
+            } else {
+                $data['error'] = 'Acesso negado! Cheque suas credencias';
+            }
+        }
+
         $this->loadView('login', $data);
     }
 }

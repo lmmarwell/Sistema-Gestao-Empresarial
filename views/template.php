@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Conta Azul</title>
+    <title>Painel - <?php echo $viewData['company_name']; ?></title>
 </head>
 <body>
 

@@ -12,9 +12,14 @@ class homeController extends controller {
     }
 
     public function index () {
-        $dados = array();
+        $data = array();
+        $u = new Users();
+        $u->setLoggedUser();
+        $company = new Companies($u->getCompany());
+        $data['company_name'] = $company->getName();
 
-        $this->loadTemplate('home', $dados);
+
+        $this->loadTemplate('home', $data);
     }
 
 }
