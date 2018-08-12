@@ -54,6 +54,21 @@ class Users extends model
         }
     }
 
+    public function logout ()
+    {
+        unset($_SESSION['userLogin']);
+    }
+
+    // Pegar o email do usuario logado
+    public function getEmail()
+    {
+        if (isset($this->userInfo['email'])) {
+            return $this->userInfo['email'];
+        } else {
+            return 0;
+        }
+    }
+
     // Pegar por ID
     public function getCompany()
     {
