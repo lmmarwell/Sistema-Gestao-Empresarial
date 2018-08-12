@@ -1,0 +1,157 @@
+CREATE TABLE `contaazul`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(32) NOT NULL,
+  `group` INT NOT NULL,
+  PRIMARY KEY (`id`));
+
+==============================================
+
+CREATE TABLE `contaazul`.`permission_group` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `contaazul`.`permission_group`
+ADD COLUMN `params` VARCHAR(200) NOT NULL AFTER `name`;
+
+
+==============================================
+
+CREATE TABLE `contaazul`.`permission_params` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`));
+
+==============================================
+
+CREATE TABLE `contaazul`.`clients` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NULL,
+  `phone` VARCHAR(50) NULL,
+  `address` VARCHAR(100) NULL,
+  `address_neighb` VARCHAR(100) NULL,
+  `address_city` VARCHAR(50) NULL,
+  `address_state` VARCHAR(50) NULL,
+  `address_country` VARCHAR(50) NULL,
+  `address_zipcode` VARCHAR(50) NULL,
+  `stars` INT NOT NULL DEFAULT 3,
+  `internal_obs` TEXT NULL,
+  PRIMARY KEY (`id`));
+
+==============================================
+
+CREATE TABLE `contaazul`.`inventory` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `price` FLOAT NOT NULL,
+  `quant` INT NOT NULL,
+  `min_quant` INT NOT NULL,
+  PRIMARY KEY (`id`));
+
+==============================================
+
+CREATE TABLE `contaazul`.`inventory_history` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_product` INT NOT NULL,
+  `id_user` INT NOT NULL,
+  `action` VARCHAR(3) NOT NULL,
+  `date_action` DATETIME NOT NULL,
+  PRIMARY KEY (`id`));
+
+==============================================
+
+CREATE TABLE `contaazul`.`sales` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_client` INT NOT NULL,
+  `id_user` INT NOT NULL,
+  `date_sale` DATETIME NOT NULL,
+  `total_price` FLOAT NOT NULL,
+  PRIMARY KEY (`id`));
+
+==============================================
+
+CREATE TABLE `contaazul`.`sales_products` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_sale` INT NOT NULL,
+  `id_product` INT NOT NULL,
+  `quant` INT NOT NULL,
+  `sale_price` FLOAT NOT NULL,
+  PRIMARY KEY (`id`));
+
+==============================================
+
+CREATE TABLE `contaazul`.`purchases` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_user` INT NOT NULL,
+  `date_purchase` DATETIME NOT NULL,
+  `total_price` FLOAT NOT NULL,
+  PRIMARY KEY (`id`));
+
+  ==============================================
+
+  CREATE TABLE `contaazul`.`purchases_products` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_purchase` INT NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
+    `quant` INT NOT NULL,
+    `purchase_price` FLOAT NOT NULL,
+    PRIMARY KEY (`id`));
+
+  ==============================================
+
+  CREATE TABLE `contaazul`.`companies` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`id`));
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`clients`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`inventory`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`inventory_history`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`permission_group`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`permission_params`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`purchases`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`purchases_products`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`sales`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`sales_products`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
+
+  ==============================================
+
+  ALTER TABLE `contaazul`.`users`
+  ADD COLUMN `id_company` INT NOT NULL AFTER `id`;
