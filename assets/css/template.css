@@ -2,6 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-size: 13px;
+    font-family: Arial;
 }
 
 .leftmenu {
@@ -29,7 +30,7 @@ body {
     height: 40px;
     background-color: #232830;
     color: #FFFFFF;
-    font-size: 15px;
+    font-size: 13px;
 }
 
 .top_right {
@@ -44,4 +45,67 @@ body {
     color: #FFFFFF;
     text-decoration: none;
 }
+.menuarea {
+    color: #FFFFFF;
+}
 
+.menuarea ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menuarea li {
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 2px solid #999;
+    font-size: 12px;
+    padding-left: 30px;
+    background-size: 13px 13px;
+    background-repeat: no-repeat;
+    background-position: 8px 12px;
+}
+
+.menuarea li:hover {
+    background-color: #000;
+}
+.menuarea li a {
+    color: #FFFFFF;
+    text-decoration: none;
+    display: block;
+}
+
+.menuarea li:nth-child(1) {
+    background-image: url("../images/icones/home.png");
+}
+.menuarea li:nth-child(2) {
+    background-image: url("../images/icones/key.png");
+}
+
+.area {
+    padding: 15px;
+}
+
+.tabitem {
+    float: left;
+    width: 50%;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    border-bottom: 1px solid #000;
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+.activetab {
+    border-bottom: 1px solid #FFFFFF;
+    background-color: #FFFFFF;
+}
+
+.tabcontent {
+
+}
+
+.tabbody {
+    display: none;
+}
