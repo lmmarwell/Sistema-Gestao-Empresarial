@@ -9,6 +9,7 @@
 class Users extends model
 {
     private $userInfo;
+    private $permissions;
 
     // Verifica se o usuario esta logado
     public function isLogged()
@@ -50,6 +51,9 @@ class Users extends model
 
             if ($sql->rowCount() > 0) {
                 $this->userInfo = $sql->fetch();
+                // Setando as permissoes do usuario
+                $this->permissions = new Permissions();
+                $this->permissions->setGroup($this->userInfo['group'], $this->userInfo['id_company']);
             }
         }
     }
@@ -59,13 +63,17 @@ class Users extends model
         unset($_SESSION['userLogin']);
     }
 
+    public function hasPermission ($name) {
+       return $this->permissions->hasPermission($name);
+    }
+
     // Pegar o email do usuario logado
     public function getEmail()
     {
         if (isset($this->userInfo['email'])) {
             return $this->userInfo['email'];
         } else {
-            return 0;
+            return '';
         }
     }
 
