@@ -1,0 +1,3 @@
+funções e o que fazem.
+
+in_array = recebe 2 parametros, checa se um valor existe em um array sendo o primeiro parametro o valor e o segundo o array.

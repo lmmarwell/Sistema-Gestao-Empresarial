@@ -53,18 +53,19 @@ class Users extends model
                 $this->userInfo = $sql->fetch();
                 // Setando as permissoes do usuario
                 $this->permissions = new Permissions();
-                $this->permissions->setGroup($this->userInfo['group'], $this->userInfo['id_company']);
+                $this->permissions->setGroup($this->userInfo['id_group'], $this->userInfo['id_company']);
             }
         }
     }
 
-    public function logout ()
+    public function logout()
     {
         unset($_SESSION['userLogin']);
     }
 
-    public function hasPermission ($name) {
-       return $this->permissions->hasPermission($name);
+    public function hasPermission($name)
+    {
+        return $this->permissions->hasPermission($name);
     }
 
     // Pegar o email do usuario logado
@@ -84,6 +85,20 @@ class Users extends model
             return $this->userInfo['id_company'];
         } else {
             return 0;
+        }
+    }
+
+    public function findUsersInGroup($id)
+    {
+        $sql = $this->db->prepare("select count(*) as c from users where id_group = :id_group");
+        $sql->bindValue(':id_group', $id);
+        $sql->execute();
+        $row = $sql->fetch();
+
+        if ($row['c'] == '0'){
+            return false;
+        } else {
+            return true;
         }
     }
 }
