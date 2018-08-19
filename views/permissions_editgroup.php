@@ -13,5 +13,5 @@
         </div>
     <?php endforeach; ?>
     <br><br>
-    <input type="submit" value="Editar">
+    <input type="submit" value="Atualizar">
 </form>

@@ -41,7 +41,6 @@ class Users extends model
 
     public function setLoggedUser()
     {
-
         if (isset($_SESSION['userLogin']) && !empty($_SESSION['userLogin'])) {
             $id = $_SESSION['userLogin'];
 
@@ -95,10 +94,28 @@ class Users extends model
         $sql->execute();
         $row = $sql->fetch();
 
-        if ($row['c'] == '0'){
+        if ($row['c'] == '0') {
             return false;
         } else {
             return true;
         }
+    }
+
+    public function getList($id_company)
+    {
+        $array = array();
+        $sql = $this->db->prepare("select users.id, users.email, permission_groups.name
+                                            from users
+                                            left join permission_groups on permission_groups.id = users.id
+                                            where users.id_company = :id_company");
+        $sql->bindValue(':id_company', $id_company);
+        $sql->execute();
+
+        if ($sql->rowCount() > 0) {
+            $array = $sql->fetchAll();
+        }
+
+        return $array;
+
     }
 }
