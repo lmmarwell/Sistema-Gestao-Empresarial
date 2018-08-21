@@ -1,19 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: victo
- * Date: 12/08/2018
- * Time: 21:39
- */
 
 class PermissionsController extends controller
 {
+
     public function __construct()
     {
         parent::__construct();
+
         $u = new Users();
         if ($u->isLogged() == false) {
-            header("location: " . BASE . "login");
+            header("Location: " . BASE . "login");
             exit;
         }
     }
@@ -31,10 +27,10 @@ class PermissionsController extends controller
             $permissions = new Permissions();
             $data['permissions_list'] = $permissions->getList($u->getCompany());
             $data['permissions_groups_list'] = $permissions->getGroupList($u->getCompany());
+
             $this->loadTemplate('permissions', $data);
         } else {
             header("Location: " . BASE);
-            exit;
         }
     }
 
@@ -50,23 +46,20 @@ class PermissionsController extends controller
         if ($u->hasPermission('permissions_view')) {
             $permissions = new Permissions();
 
-            // Verificar se esta retornando algo do formulario de adicionar permissao
             if (isset($_POST['name']) && !empty($_POST['name'])) {
                 $pname = addslashes($_POST['name']);
-                // Adicionar permissão a essa empresa/cliente
                 $permissions->add($pname, $u->getCompany());
                 header("Location: " . BASE . "permissions");
-                exit;
             }
 
             $this->loadTemplate('permissions_add', $data);
         } else {
             header("Location: " . BASE);
-            exit;
         }
+
     }
 
-    public function add_group()
+    public function addGroup()
     {
         $data = array();
         $u = new Users();
@@ -78,15 +71,12 @@ class PermissionsController extends controller
         if ($u->hasPermission('permissions_view')) {
             $permissions = new Permissions();
 
-            // Verificar se esta retornando algo do formulario de adicionar permissao
             if (isset($_POST['name']) && !empty($_POST['name'])) {
                 $pname = addslashes($_POST['name']);
                 $plist = $_POST['permissions'];
 
-                // Adicionar permissão a essa empresa/cliente
                 $permissions->addGroup($pname, $plist, $u->getCompany());
                 header("Location: " . BASE . "permissions");
-                exit;
             }
 
             $data['permissions_list'] = $permissions->getList($u->getCompany());
@@ -94,12 +84,12 @@ class PermissionsController extends controller
             $this->loadTemplate('permissions_addgroup', $data);
         } else {
             header("Location: " . BASE);
-            exit;
         }
     }
 
     public function delete($id)
     {
+
         $data = array();
         $u = new Users();
         $u->setLoggedUser();
@@ -110,17 +100,16 @@ class PermissionsController extends controller
         if ($u->hasPermission('permissions_view')) {
             $permissions = new Permissions();
             $permissions->delete($id);
-
             header("Location: " . BASE . "permissions");
-            exit;
         } else {
             header("Location: " . BASE);
-            exit;
         }
+
     }
 
     public function deleteGroup($id)
     {
+
         $data = array();
         $u = new Users();
         $u->setLoggedUser();
@@ -140,7 +129,7 @@ class PermissionsController extends controller
         }
     }
 
-    public function editGroup ($id)
+    public function editGroup($id)
     {
         $data = array();
         $u = new Users();
@@ -152,15 +141,12 @@ class PermissionsController extends controller
         if ($u->hasPermission('permissions_view')) {
             $permissions = new Permissions();
 
-            // Verificar se esta retornando algo do formulario de adicionar permissao
             if (isset($_POST['name']) && !empty($_POST['name'])) {
                 $pname = addslashes($_POST['name']);
                 $plist = $_POST['permissions'];
 
-                // Adicionar permissão a essa empresa/cliente
                 $permissions->editGroup($pname, $plist, $id, $u->getCompany());
                 header("Location: " . BASE . "permissions");
-                exit;
             }
 
             $data['permissions_list'] = $permissions->getList($u->getCompany());
@@ -169,8 +155,20 @@ class PermissionsController extends controller
             $this->loadTemplate('permissions_editgroup', $data);
         } else {
             header("Location: " . BASE);
-            exit;
         }
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

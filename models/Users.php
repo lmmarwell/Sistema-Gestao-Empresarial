@@ -87,10 +87,27 @@ class Users extends model
         }
     }
 
+    public function getInfo($id, $id_company)
+    {
+        $array = array();
+
+        $sql = $this->db->prepare("SELECT * FROM users WHERE id = :id AND id_company = :id_company");
+        $sql->bindValue(":id", $id);
+        $sql->bindValue(":id_company", $id_company);
+        $sql->execute();
+
+        if ($sql->rowCount() > 0) {
+            $array = $sql->fetch();
+        }
+
+        return $array;
+    }
+
     public function findUsersInGroup($id)
     {
-        $sql = $this->db->prepare("select count(*) as c from users where id_group = :id_group");
-        $sql->bindValue(':id_group', $id);
+
+        $sql = $this->db->prepare("SELECT COUNT(*) as c FROM users WHERE id_group = :group");
+        $sql->bindValue(":group", $id);
         $sql->execute();
         $row = $sql->fetch();
 
@@ -104,11 +121,17 @@ class Users extends model
     public function getList($id_company)
     {
         $array = array();
-        $sql = $this->db->prepare("select users.id, users.email, permission_groups.name
-                                            from users
-                                            left join permission_groups on permission_groups.id = users.id
-                                            where users.id_company = :id_company");
-        $sql->bindValue(':id_company', $id_company);
+
+        $sql = $this->db->prepare("
+			SELECT
+				users.id,
+				users.email,
+				permission_groups.name
+			FROM users
+			LEFT JOIN permission_groups ON permission_groups.id = users.id_group
+			WHERE
+			users.id_company = :id_company");
+        $sql->bindValue(":id_company", $id_company);
         $sql->execute();
 
         if ($sql->rowCount() > 0) {
@@ -116,6 +139,53 @@ class Users extends model
         }
 
         return $array;
+    }
 
+    public function add($email, $pass, $group, $id_company)
+    {
+        $sql = $this->db->prepare("SELECT COUNT(*) as c FROM users WHERE email = :email");
+        $sql->bindValue(":email", $email);
+        $sql->execute();
+        $row = $sql->fetch();
+
+        if ($row['c'] == '0') {
+
+            $sql = $this->db->prepare("INSERT INTO users SET email = :email, password = :password, id_group = :id_group, id_company = :id_company");
+            $sql->bindValue(":email", $email);
+            $sql->bindValue(":password", md5($pass));
+            $sql->bindValue(":id_group", $group);
+            $sql->bindValue(":id_company", $id_company);
+            $sql->execute();
+
+            return '1';
+        } else {
+            return '0';
+        }
+    }
+
+    public function edit($pass, $group, $id, $id_company)
+    {
+
+        $sql = $this->db->prepare("update  users set id_group = :id_group where id = :id and id_company = :id_company");
+        $sql->bindValue(':id', $id);
+        $sql->bindValue(':id_group', $group);
+        $sql->bindValue(':id_company', $id_company);
+        $sql->execute();
+
+        if (!empty($pass)) {
+            $sql = $this->db->prepare("update users set password = :password where id = :id and id_company = :id_company");
+            $sql->bindValue(':id', $id);
+            $sql->bindValue(':password', md5($pass));
+            $sql->bindValue(':id_company', $id_company);
+            $sql->execute();
+        }
+    }
+
+    public function delete($id, $id_company)
+    {
+        $sql = $this->db->prepare("delete from users where id = :id and id_company = :id_company");
+        $sql->bindValue(':id', $id);
+        $sql->bindValue(':id_company', $id_company);
+        $sql->execute();
     }
 }

@@ -8,7 +8,7 @@
 <div class="tabcontent">
     <div class="tabbody" style="display: block;">
         <div class="button">
-            <a href="<?php echo BASE; ?>permissions/add_group">Adicionar Grupo de Permissões</a>
+            <a href="<?php echo BASE; ?>permissions/addGroup">Adicionar Grupo de Permissões</a>
         </div>
         <table border="0" width="100%">
             <tr>
