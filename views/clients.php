@@ -20,9 +20,10 @@
         <td width="170" align="center">
             <?php if ($edit_permission): ?>
                 <div class="button button_edit"><a
-                            href="<?php echo BASE; ?>clients/edit<?php echo $c['id'] ?>">Editar</a></div>
+                            href="<?php echo BASE; ?>clients/edit/<?php echo $c['id'] ?>">Editar</a></div>
                 <div class="button button_delete"><a
-                            href="<?php echo BASE; ?>clients/delete/<?php echo $c['id']; ?>">Deletar</a></div>
+                            href="<?php echo BASE; ?>clients/delete/<?php echo $c['id']; ?>"
+                            onclick="return confirm('Deseja Excluir?')">Deletar</a></div>
             <?php else: ?>
                 <div class="button button_small"><a
                             href="<?php echo BASE; ?>clients/edit<?php echo $c['id'] ?>">Visualizar</a></div>
