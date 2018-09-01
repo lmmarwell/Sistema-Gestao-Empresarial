@@ -1,10 +1,12 @@
-<h1>Usuários - Adicionar</h1>
+<h1>Usuários - Editar</h1>
 
+<?php if (isset($error_msg) && !empty($error_msg)): ?>
+    <div class="warn"><?php echo $error_msg; ?></div>
+<?php endif; ?>
 
 <form method="POST">
-
     <label for="email">E-mail</label><br/>
-    <?php echo $user_info['email']; ?><br><br>
+    <?php echo $user_info['email']; ?><br/><br/>
 
     <label for="password">Senha</label><br/>
     <input type="password" name="password"/><br/><br/>

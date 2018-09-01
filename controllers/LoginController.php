@@ -1,38 +1,31 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: victo
- * Date: 12/08/2018
- * Time: 10:02
- */
+class loginController extends controller {
 
-class LoginController extends controller
-{
-    public function index()
-    {
-        $data = array();
+	public function index() {
+		$data = array();
 
-        if (isset($_POST['email']) && !empty($_POST['email'])) {
-            $email = addslashes($_POST['email']);
-            $pass = addslashes($_POST['password']);
+		if(isset($_POST['email']) && !empty($_POST['email'])) {
+			$email = addslashes($_POST['email']);
+			$pass  = addslashes($_POST['password']);
 
-            $u = new Users();
+			$u = new Users();
 
-            if ($u->doLogin($email, $pass)) {
-                header("Location: " . BASE);
-                exit;
-            } else {
-                $data['error'] = 'Acesso negado! Cheque suas credencias';
-            }
-        }
+			if($u->doLogin($email, $pass)) {
+				header("Location: ".BASE_URL);
+				exit;
+			} else {
+				$data['error'] = 'E-mail e/ou senha errados.';
+			}
+		}
 
-        $this->loadView('login', $data);
-    }
+		$this->loadView('login', $data);
 
-    public function logout()
-    {
-        $u = new Users();
-        $u->logout();
-        header("Location: " . BASE);
-    }
+	}
+
+	public function logout() {
+		$u = new Users();
+		$u->logout();
+		header("Location: ".BASE_URL);
+	}
+
 }

@@ -1,38 +1,34 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: victo
- * Date: 12/08/2018
- * Time: 09:55
- */
 
 class Users extends model
 {
+
     private $userInfo;
     private $permissions;
 
-    // Verifica se o usuario esta logado
     public function isLogged()
     {
-        if (isset($_SESSION['userLogin']) && !empty($_SESSION['userLogin'])) {
+
+        if (isset($_SESSION['ccUser']) && !empty($_SESSION['ccUser'])) {
             return true;
         } else {
             return false;
         }
+
     }
 
-    // Metodo para realizar o login
     public function doLogin($email, $password)
     {
-        $sql = $this->db->prepare("SELECT * from users where email = :email and password = :password");
+
+        $sql = $this->db->prepare("SELECT * FROM users WHERE email = :email AND password = :password");
         $sql->bindValue(':email', $email);
         $sql->bindValue(':password', md5($password));
         $sql->execute();
 
         if ($sql->rowCount() > 0) {
             $row = $sql->fetch();
-            // Se houve registro pega o id do usuario e adiciona na sessao
-            $_SESSION['userLogin'] = $row['id'];
+            $_SESSION['ccUser'] = $row['id'];
+
             return true;
         } else {
             return false;
@@ -41,25 +37,25 @@ class Users extends model
 
     public function setLoggedUser()
     {
-        if (isset($_SESSION['userLogin']) && !empty($_SESSION['userLogin'])) {
-            $id = $_SESSION['userLogin'];
+        if (isset($_SESSION['ccUser']) && !empty($_SESSION['ccUser'])) {
+            $id = $_SESSION['ccUser'];
 
-            $sql = $this->db->prepare("select * from users where id = :id");
+            $sql = $this->db->prepare("SELECT * FROM users WHERE id = :id");
             $sql->bindValue(':id', $id);
             $sql->execute();
 
             if ($sql->rowCount() > 0) {
                 $this->userInfo = $sql->fetch();
-                // Setando as permissoes do usuario
                 $this->permissions = new Permissions();
                 $this->permissions->setGroup($this->userInfo['id_group'], $this->userInfo['id_company']);
             }
+
         }
     }
 
     public function logout()
     {
-        unset($_SESSION['userLogin']);
+        unset($_SESSION['ccUser']);
     }
 
     public function hasPermission($name)
@@ -67,7 +63,15 @@ class Users extends model
         return $this->permissions->hasPermission($name);
     }
 
-    // Pegar o email do usuario logado
+    public function getCompany()
+    {
+        if (isset($this->userInfo['id_company'])) {
+            return $this->userInfo['id_company'];
+        } else {
+            return 0;
+        }
+    }
+
     public function getEmail()
     {
         if (isset($this->userInfo['email'])) {
@@ -77,13 +81,12 @@ class Users extends model
         }
     }
 
-    // Pegar por ID
-    public function getCompany()
+    public function getId()
     {
-        if (isset($this->userInfo['id_company'])) {
-            return $this->userInfo['id_company'];
+        if (isset($this->userInfo['id'])) {
+            return $this->userInfo['id'];
         } else {
-            return 0;
+            return '';
         }
     }
 
@@ -161,31 +164,43 @@ class Users extends model
         } else {
             return '0';
         }
+
     }
 
     public function edit($pass, $group, $id, $id_company)
     {
-
-        $sql = $this->db->prepare("update  users set id_group = :id_group where id = :id and id_company = :id_company");
-        $sql->bindValue(':id', $id);
-        $sql->bindValue(':id_group', $group);
-        $sql->bindValue(':id_company', $id_company);
+        $sql = $this->db->prepare("UPDATE users SET id_group = :id_group WHERE id = :id AND id_company = :id_company");
+        $sql->bindValue(":id_group", $group);
+        $sql->bindValue(":id", $id);
+        $sql->bindValue(":id_company", $id_company);
         $sql->execute();
 
         if (!empty($pass)) {
-            $sql = $this->db->prepare("update users set password = :password where id = :id and id_company = :id_company");
-            $sql->bindValue(':id', $id);
-            $sql->bindValue(':password', md5($pass));
-            $sql->bindValue(':id_company', $id_company);
+            $sql = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id AND id_company = :id_company");
+            $sql->bindValue(":password", md5($pass));
+            $sql->bindValue(":id", $id);
+            $sql->bindValue(":id_company", $id_company);
             $sql->execute();
         }
     }
 
     public function delete($id, $id_company)
     {
-        $sql = $this->db->prepare("delete from users where id = :id and id_company = :id_company");
-        $sql->bindValue(':id', $id);
-        $sql->bindValue(':id_company', $id_company);
+        $sql = $this->db->prepare("DELETE FROM users WHERE id = :id AND id_company = :id_company");
+        $sql->bindValue(":id", $id);
+        $sql->bindValue(":id_company", $id_company);
         $sql->execute();
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+

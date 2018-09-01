@@ -1,39 +1,37 @@
 <?php
+class Core {
 
-class Core
-{
+	public function run() {
+        $url = explode('index.php', $_SERVER['PHP_SELF']);
+        $url = end($url);
+        
+		$params = array();
+		if(!empty($url) && $url != '/') {
+			$url = explode('/', $url);
+			array_shift($url);
 
-    public function run()
-    {
-        $url = $_SERVER['REQUEST_URI'];
+			$currentController = $url[0].'Controller';
+			array_shift($url);
 
-        $params = array();
-        if (!empty($url) && $url != '/') {
-            $url = explode('/', $url);
-            array_shift($url);
+			if(isset($url[0])) {
+				$currentAction = $url[0];
+				array_shift($url);
+			} else {
+				$currentAction = 'index';
+			}
 
-            $currentController = $url[0] . 'Controller';
-            array_shift($url);
+			if(count($url) > 0) {
+				$params = $url;
+			}
 
-            if (isset($url[0])) {
-                $currentAction = $url[0];
-                array_shift($url);
-            } else {
-                $currentAction = 'index';
-            }
+		} else {
+			$currentController = 'homeController';
+			$currentAction = 'index';
+		}
 
-            if (count($url) > 0) {
-                $params = $url;
-            }
+		$c = new $currentController();
+		call_user_func_array(array($c, $currentAction), $params);
 
-        } else {
-            $currentController = 'homeController';
-            $currentAction = 'index';
-        }
-
-        $c = new $currentController();
-        call_user_func_array(array($c, $currentAction), $params);
-
-    }
+	}
 
 }
